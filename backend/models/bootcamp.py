@@ -67,7 +67,7 @@ class Bootcamp(db.Model):
         the model must exist in the database
         EXAMPLE
             bootcamp = Bootcamp.query.filter(bootcamp.id=id).one_or_none()
-            bootcamp.title = 'Black Coffee'
+            bootcamp.title = 'Juno'
             bootcamp.update()
     '''
 
