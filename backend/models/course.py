@@ -23,7 +23,7 @@ class Course(db.Model):
             "id": self.id,
             "title": self.title,
             "description": self.description,
-            "duration": self.duration
+            "duration": self.duration,
             "tuition": self.tuition,
             "minimum_skill": self.minimum_skill,
             "scholarships_available": self.scholarships_available
