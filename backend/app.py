@@ -1,7 +1,13 @@
 from flask import Flask, request, jsonify
 from flask_api import status
+from flask_sqlalchemy import SQLAlchemy
+
+from config import Development
+from models import setup_db, create_all, Bootcamp
 
 app = Flask(__name__)
+setup_db(app)
+create_all()
 
 
 def create_bootcamp(bootcamp):
@@ -92,3 +98,8 @@ def delete_bootcamp(id):
         "message": f"Delete bootcamp {id}"
     })
     return data, status.HTTP_200_OK
+
+
+# # Default port:
+# if __name__ == '__main__':
+#     app.run()
