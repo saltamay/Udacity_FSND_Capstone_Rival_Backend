@@ -5,7 +5,7 @@
         "duration": 8,
         "tuition": 8000,
         "minimum_skill": "beginner",
-        "scholarhips_available": True,
+        "scholarships_available": True,
     },
     {
         "title": "Full Stack Web Development",

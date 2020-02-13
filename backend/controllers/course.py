@@ -102,18 +102,16 @@ def update_course(request, id):
 
 '''
     DELETE /api/v1/courses/<int:id>
-        Returns status code 200 and json object { "success": True, "data": course}
-            where course is the deleted course with the id of id
-            that is defined within the query string
-        Access public
+        Returns status code 200 and json object { "success": True }
+            
+        Access private
 '''
 
 
-def delete_bootcamp(id):
+def delete_course(id):
     course = Course.query.filter_by(id=id).one_or_none()
     course.delete()
     data = jsonify({
-        "success": True,
-        "data": course
+        "success": True
     })
     return data

@@ -106,10 +106,9 @@ def update_bootcamp(request, id):
 
 '''
     DELETE /api/v1/bootcamps/<int:id>
-        Returns status code 200 and json object { "success": True, "data": bootcamp}
-            where bootcamp is the deleted bootcamp with the id of id
-            that is defined within the query string
-        Access public
+        Returns status code 200 and json object { "success": True }
+            
+        Access private
 '''
 
 
@@ -117,7 +116,6 @@ def delete_bootcamp(id):
     bootcamp = Bootcamp.query.filter_by(id=id).one_or_none()
     bootcamp.delete()
     data = jsonify({
-        "success": True,
-        "data": bootcamp
+        "success": True
     })
     return data
