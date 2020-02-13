@@ -4,7 +4,8 @@ from flask_api import status
 from flask_sqlalchemy import SQLAlchemy
 
 from config import Development
-from models import setup_db, create_all, Bootcamp
+from database.db import setup_db, create_all
+from models.bootcamp import Bootcamp
 
 app = Flask(__name__)
 setup_db(app)
