@@ -89,17 +89,20 @@ def get_bootcamp_by_id(id):
 
 @app.route('/api/v1/bootcamps/<int:id>', methods=['PUT'])
 def update_bootcamp_by_id(id):
-    updated_bootcamp = update_bootcamp(request, id)
+    try:
+        updated_bootcamp = update_bootcamp(request, id)
 
-    if updated_bootcamp is None:
-        abort(404)
+        if updated_bootcamp is None:
+            abort(404)
 
-    data = jsonify({
-        "success": True,
-        "message": updated_bootcamp.format()
-    })
+        data = jsonify({
+            "success": True,
+            "message": updated_bootcamp.format()
+        })
 
-    return data, status.HTTP_200_OK
+        return data, status.HTTP_200_OK
+    except:
+        abort(422)
 
 
 '''
@@ -112,12 +115,15 @@ def update_bootcamp_by_id(id):
 
 @app.route('/api/v1/bootcamps/<int:id>', methods=['DELETE'])
 def delete_bootcamp_by_id(id):
-    data = delete_bootcamp(id)
+    try:
+        data = delete_bootcamp(id)
 
-    if data is None:
-        abort(404)
+        if data is None:
+            abort(404)
 
-    return data, status.HTTP_200_OK
+        return data, status.HTTP_200_OK
+    except:
+        abort(422)
 
 
 '''
@@ -195,17 +201,20 @@ def get_course_by_id(id):
 
 @app.route('/api/v1/courses/<int:id>', methods=['PUT'])
 def update_course_by_id(id):
-    updated_course = update_course(request, id)
+    try:
+        updated_course = update_course(request, id)
 
-    if updated_course is None:
-        abort(404)
+        if updated_course is None:
+            abort(404)
 
-    data = jsonify({
-        "success": True,
-        "message": updated_course.format()
-    })
+        data = jsonify({
+            "success": True,
+            "message": updated_course.format()
+        })
 
-    return data, status.HTTP_200_OK
+        return data, status.HTTP_200_OK
+    except:
+        abort(422)
 
 
 '''
@@ -218,12 +227,15 @@ def update_course_by_id(id):
 
 @app.route('/api/v1/courses/<int:id>', methods=['DELETE'])
 def delete_course_by_id(id):
-    data = delete_course(id)
+    try:
+        data = delete_course(id)
 
-    if data is None:
-        abort(404)
+        if data is None:
+            abort(404)
 
-    return data, status.HTTP_200_OK
+        return data, status.HTTP_200_OK
+    except:
+        abort(422)
 
 
 # Default port:
