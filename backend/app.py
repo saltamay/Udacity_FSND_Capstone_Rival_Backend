@@ -3,7 +3,8 @@ from flask import Flask, request, jsonify, abort
 from flask_api import status
 from flask_sqlalchemy import SQLAlchemy
 
-from config import Development
+from config.config import Development
+# from config.config import Test
 from database.db import setup_db, create_all
 from controllers.bootcamp import add_bootcamp, get_bootcamps, get_single_bootcamp, update_bootcamp, delete_bootcamp
 from controllers.course import add_course, get_courses, get_single_course, update_course, delete_course

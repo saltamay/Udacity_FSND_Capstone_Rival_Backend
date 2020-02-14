@@ -4,8 +4,9 @@ import json
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-from config import Test
-from database.db import setup_db, create_all
+from app import app
+from config.config import Test
+from database.db import setup_db
 from models.bootcamp import Bootcamp
 from models.course import Course
 
@@ -15,8 +16,10 @@ class BootcampsTestCase(unittest.TestCase):
 
     def setUp(self):
         '''Define test variables and initialize app.'''
-        self.app = Flask(__name__)
+        self.app = app
         self.client = self.app.test_client
+        # propagate the exceptions to the test client
+        self.app.testing = True
         setup_db(self.app, Test.SQLALCHEMY_DATABASE_URI)
 
         self.new_bootcamp = {
@@ -39,21 +42,26 @@ class BootcampsTestCase(unittest.TestCase):
             "scholarships_available": True
         }
 
-        '''binds the app to the current context'''
-        with self.app.app_context():
-            self.db = SQLAlchemy()
-            self.db.init_app(self.app)
-            '''create all tables'''
-            self.db.create_all()
+        # '''binds the app to the current context'''
+        # with self.app.app_context():
+        #     self.db = SQLAlchemy()
+        #     self.db.init_app(self.app)
+        #     '''create all tables'''
+        #     self.db.create_all()
 
     def tearDown(self):
         '''Executed after reach test'''
         pass
 
     def test_get_all_bootcamps(self):
-        res = self.client().get('/bootcamps')
+        res = self.client().get('/api/v1/bootcamps')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['data']))
+
+
+# Make the tests conveniently executable
+if __name__ == "__main__":
+    unittest.main()
