@@ -120,27 +120,110 @@ def delete_bootcamp_by_id(id):
     return data, status.HTTP_200_OK
 
 
+'''
+    GET /api/v1/courses
+        Returns status code 200 and json object { "success": True, "data": courses}
+            where courses is the list of all courses
+        Access public
+    
+    POST /api/v1/courses
+        Returns status code 201 and json object { "success": True, "data": course}
+            where course is the newly create course
+        Access Private
+'''
+
+
 @app.route('/api/v1/courses', methods=['GET', 'POST'])
 def course():
     if request.method == 'GET':
-        return get_courses(), status.HTTP_200_OK
+        courses = get_courses()
+
+        if len(courses) == 0:
+            abort(404)
+
+        courses = [course.format() for course in courses]
+
+        data = jsonify({
+            "success": True,
+            "data": courses
+        })
+        return data, status.HTTP_200_OK
     else:
-        return add_course(request), status.HTTP_201_CREATED
+        try:
+            new_course = add_course(request)
+
+            data = jsonify({
+                "success": True,
+                "message": new_course.format()
+            })
+            return data, status.HTTP_201_CREATED
+        except:
+            abort(422)
+
+
+'''
+    GET /api/v1/courses/<int:id>
+        Returns status code 200 and json object { "success": True, "data": course}
+            where course is the course with the id of id
+            that is defined within the query string
+        Access public
+'''
 
 
 @app.route('/api/v1/courses/<int:id>', methods=['GET'])
 def get_course_by_id(id):
-    return get_single_course(id), status.HTTP_200_OK
+    course = get_single_course(id)
+
+    if course is None:
+        abort(404)
+
+    data = jsonify({
+        "success": True,
+        "data": course.format()
+    })
+    return data, status.HTTP_200_OK
+
+
+'''
+    PUT /api/v1/courses/<int:id>
+        Returns status code 200 and json object { "success": True, "data": course}
+            where course is the updated course with the id of id
+            that is defined within the query string
+        Access private
+'''
 
 
 @app.route('/api/v1/courses/<int:id>', methods=['PUT'])
 def update_course_by_id(id):
-    return update_course(request, id), status.HTTP_200_OK
+    updated_course = update_course(request, id)
+
+    if updated_course is None:
+        abort(404)
+
+    data = jsonify({
+        "success": True,
+        "message": updated_course.format()
+    })
+
+    return data, status.HTTP_200_OK
+
+
+'''
+    DELETE /api/v1/courses/<int:id>
+        Returns status code 200 and json object { "success": True }
+            
+        Access private
+'''
 
 
 @app.route('/api/v1/courses/<int:id>', methods=['DELETE'])
 def delete_course_by_id(id):
-    return delete_course(id), status.HTTP_200_OK
+    data = delete_course(id)
+
+    if data is None:
+        abort(404)
+
+    return data, status.HTTP_200_OK
 
 
 # Default port:

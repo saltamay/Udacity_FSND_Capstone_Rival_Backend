@@ -2,49 +2,15 @@ from flask import jsonify
 from models.course import Course
 
 
-'''
-    GET /api/v1/courses
-        Returns status code 200 and json object { "success": True, "data": courses}
-            where courses is the list of all courses
-        Access public
-'''
-
-
 def get_courses():
-    courses = Course.query.all()
-    courses = [course.format() for course in courses]
-    data = jsonify({
-        "success": True,
-        "data": courses
-    })
-    return data
-
-
-'''
-    GET /api/v1/courses/<int:id>
-        Returns status code 200 and json object { "success": True, "data": course}
-            where course is the course with the id of id
-            that is defined within the query string
-        Access public
-'''
+    return Course.query.all()
 
 
 def get_single_course(id):
-    course = Course.query.filter_by(id=id).one_or_none()
-    data = jsonify({
-        "success": True,
-        "data": course.format()
-    })
-
-    return data
-
-
-'''
-    POST /api/v1/courses
-        Returns status code 201 and json object { "success": True, "data": course}
-            where course is the newly create course
-        Access Private
-'''
+    try:
+        return Course.query.filter_by(id=id).one_or_none()
+    except:
+        return None
 
 
 def add_course(request):
@@ -62,25 +28,14 @@ def add_course(request):
 
     new_course.insert()
 
-    data = jsonify({
-        "success": True,
-        "message": new_course.format()
-    })
-
-    return data
-
-
-'''
-    PUT /api/v1/courses/<int:id>
-        Returns status code 200 and json object { "success": True, "data": course}
-            where course is the updated course with the id of id
-            that is defined within the query string
-        Access private
-'''
+    return new_course
 
 
 def update_course(request, id):
     course = Course.query.filter_by(id=id).one_or_none()
+
+    if course is None:
+        return None
 
     updated_course = request.get_json()
 
@@ -93,23 +48,15 @@ def update_course(request, id):
 
     course.update()
 
-    data = jsonify({
-        "success": True,
-        "message": course.format()
-    })
-    return data
-
-
-'''
-    DELETE /api/v1/courses/<int:id>
-        Returns status code 200 and json object { "success": True }
-            
-        Access private
-'''
+    return course
 
 
 def delete_course(id):
     course = Course.query.filter_by(id=id).one_or_none()
+
+    if course is None:
+        return None
+
     course.delete()
     data = jsonify({
         "success": True
