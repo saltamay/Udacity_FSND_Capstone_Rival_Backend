@@ -11,6 +11,7 @@ from controllers.course import add_course, get_courses, get_single_course, updat
 app = Flask(__name__)
 setup_db(app, Development.SQLALCHEMY_DATABASE_URI)
 
+
 '''
     GET /api/v1/bootcamps
         Returns status code 200 and json object { "success": True, "data": bootcamps}

@@ -10,7 +10,7 @@ from models.bootcamp import Bootcamp
 from models.course import Course
 
 
-class BootcampReportTestCase(unittest.TestCase):
+class BootcampsTestCase(unittest.TestCase):
     '''This class represents the bootcamp report test case'''
 
     def setUp(self):
@@ -49,3 +49,11 @@ class BootcampReportTestCase(unittest.TestCase):
     def tearDown(self):
         '''Executed after reach test'''
         pass
+
+    def test_get_all_bootcamps(self):
+        res = self.client().get('/bootcamps')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['data']))
