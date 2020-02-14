@@ -5,7 +5,7 @@
         "duration": 8,
         "tuition": 8000,
         "minimum_skill": "beginner",
-        "scholarships_available": True,
+        "scholarships_available": True
     },
     {
         "title": "Full Stack Web Development",
@@ -13,7 +13,7 @@
         "duration": 12,
         "tuition": 10000,
         "minimum_skill": "intermediate",
-        "scholarships_available": True,
+        "scholarships_available": True
     },
     {
         "title": "Full Stack Web Dev",
@@ -21,7 +21,7 @@
         "duration": 10,
         "tuition": 12000,
         "minimum_skill": "intermediate",
-        "scholarships_available": True,
+        "scholarships_available": True
     },
     {
         "title": "UI/UX",
@@ -29,7 +29,7 @@
         "duration": 12,
         "tuition": 10000,
         "minimum_skill": "intermediate",
-        "scholarships_available": True,
+        "scholarships_available": True
     },
     {
         "title": "Web Design & Development",
@@ -37,7 +37,7 @@
         "duration": 10,
         "tuition": 9000,
         "minimum_skill": "beginner",
-        "scholarships_available": True,
+        "scholarships_available": True
     },
     {
         "title": "Data Science Program",
@@ -45,7 +45,7 @@
         "duration": 10,
         "tuition": 12000,
         "minimum_skill": "intermediate",
-        "scholarships_available": False,
+        "scholarships_available": False
     },
     {
         "title": "Web Development",
@@ -53,7 +53,7 @@
         "duration": 8,
         "tuition": 8000,
         "minimum_skill": "beginner",
-        "scholarships_available": False,
+        "scholarships_available": False
     },
     {
         "title": "Software QA",
@@ -61,7 +61,7 @@
         "duration": 6,
         "tuition": 5000,
         "minimum_skill": "intermediate",
-        "scholarships_available": False,
+        "scholarships_available": False
     },
     {
         "title": "IOS Development",
@@ -69,6 +69,6 @@
         "duration": 8,
         "tuition": 6000,
         "minimum_skill": "intermediate",
-        "scholarships_available": False,
+        "scholarships_available": False
     }
 ]

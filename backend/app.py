@@ -5,13 +5,11 @@ from flask_sqlalchemy import SQLAlchemy
 
 from config import Development
 from database.db import setup_db, create_all
-from models.bootcamp import Bootcamp
 from controllers.bootcamp import add_bootcamp, get_bootcamps, get_single_bootcamp, update_bootcamp, delete_bootcamp
 from controllers.course import add_course, get_courses, get_single_course, update_course, delete_course
 
 app = Flask(__name__)
-setup_db(app)
-create_all()
+setup_db(app, Development.SQLALCHEMY_DATABASE_URI)
 
 '''
     GET /api/v1/bootcamps

@@ -1,6 +1,5 @@
 import json
 from flask_sqlalchemy import SQLAlchemy
-from config import Postgrest
 
 
 db = SQLAlchemy()
@@ -12,11 +11,12 @@ setup_db(app)
 '''
 
 
-def setup_db(app):
-    app.config['SQLALCHEMY_DATABASE_URI'] = Postgrest.SQLALCHEMY_DATABASE_URI
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = Postgrest.SQLALCHEMY_TRACK_MODIFICATIONS
+def setup_db(app, db_path):
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_path
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
+    db.create_all()
 
 
 def create_all():
