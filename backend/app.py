@@ -4,13 +4,14 @@ from flask_api import status
 from flask_sqlalchemy import SQLAlchemy
 
 from config.config import Development
-# from config.config import Test
+from config.config import Test
 from database.db import setup_db, create_all
 from controllers.bootcamp import add_bootcamp, get_bootcamps, get_single_bootcamp, update_bootcamp, delete_bootcamp
 from controllers.course import add_course, get_courses, get_single_course, update_course, delete_course
 
 app = Flask(__name__)
 setup_db(app, Development.SQLALCHEMY_DATABASE_URI)
+# setup_db(app, Test.SQLALCHEMY_DATABASE_URI)
 
 
 '''
@@ -48,10 +49,10 @@ def bootcamp():
 
             data = jsonify({
                 "success": True,
-                "message": new_bootcamp.format()
+                "data": new_bootcamp.format()
             })
             return data, status.HTTP_201_CREATED
-        except:
+        except BaseException:
             abort(422)
 
 
@@ -97,7 +98,7 @@ def update_bootcamp_by_id(id):
 
         data = jsonify({
             "success": True,
-            "message": updated_bootcamp.format()
+            "data": updated_bootcamp.format()
         })
 
         return data, status.HTTP_200_OK

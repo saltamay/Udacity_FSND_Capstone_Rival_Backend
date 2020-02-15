@@ -62,6 +62,7 @@ def delete_bootcamp(id):
         return None
 
     bootcamp.delete()
+
     data = jsonify({
         "success": True
     })
