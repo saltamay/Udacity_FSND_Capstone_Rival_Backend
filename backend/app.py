@@ -100,7 +100,8 @@ def update_bootcamp_by_id(id):
 
         return data, status.HTTP_200_OK
     except Exception as ex:
-        if ex.__class__.__name__ == 'NotFound':
+        print(ex.__class__.__name__)
+        if ex.__class__.__name__ == 'AttributeError':
             abort(404)
         else:
             abort(422)
@@ -158,7 +159,7 @@ def course():
 
             data = jsonify({
                 "success": True,
-                "message": new_course.format()
+                "data": new_course.format()
             })
             return data, status.HTTP_201_CREATED
         except:
@@ -202,17 +203,18 @@ def update_course_by_id(id):
     try:
         updated_course = update_course(request, id)
 
-        if updated_course is None:
-            abort(404)
-
         data = jsonify({
             "success": True,
-            "message": updated_course.format()
+            "data": updated_course.format()
         })
 
         return data, status.HTTP_200_OK
-    except:
-        abort(422)
+    except Exception as ex:
+        print(ex.__class__.__name__)
+        if ex.__class__.__name__ == 'AttributeError':
+            abort(404)
+        else:
+            abort(422)
 
 
 '''

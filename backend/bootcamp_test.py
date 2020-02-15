@@ -1,4 +1,3 @@
-import os
 import unittest
 import json
 from flask import Flask
@@ -8,7 +7,6 @@ from app import app
 from config.config import Test
 from database.db_test import setup_db, drop_and_create_all, db_test_init
 from models.bootcamp import Bootcamp
-from models.course import Course
 
 
 class BootcampsTestCase(unittest.TestCase):
@@ -66,15 +64,6 @@ class BootcampsTestCase(unittest.TestCase):
             "job_assistance": False
         }
 
-        self.new_course = {
-            "title": "Front End Web Development",
-            "description": "This course will provide you with all of the essentials to become a successful frontend web developer. You will learn to master HTML, CSS and front end JavaScript, along with tools like Git, VSCode and front end frameworks like Vue",
-            "duration": 8,
-            "tuition": 8000,
-            "minimum_skill": "beginner",
-            "scholarships_available": True
-        }
-
     def tearDown(self):
         '''Executed after each test'''
         pass
@@ -82,6 +71,7 @@ class BootcampsTestCase(unittest.TestCase):
     def test_add_bootcamp(self):
         res = self.client().post('/api/v1/bootcamps', json=self.new_bootcamp)
         data = json.loads(res.data)
+
         self.assertEqual(res.status_code, 201)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['data'])
