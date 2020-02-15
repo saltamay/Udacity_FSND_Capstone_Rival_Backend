@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from config.config import Development
 from config.config import Test
 from database.db import setup_db, create_all
+from auth import AuthError, requires_auth
 from controllers.bootcamp import add_bootcamp, get_bootcamps, get_single_bootcamp, update_bootcamp, delete_bootcamp
 from controllers.course import add_course, get_courses, get_single_course, update_course, delete_course
 
@@ -19,7 +20,27 @@ setup_db(app, Development.SQLALCHEMY_DATABASE_URI)
         Returns status code 200 and json object { "success": True, "data": bootcamps}
             where bootcamps is the list of all bootcamps
         Access public
+'''
 
+
+@app.route('/api/v1/bootcamps', methods=['GET'])
+def bootcamps():
+    bootcamps = get_bootcamps()
+
+    if len(bootcamps) == 0:
+        abort(404)
+
+    bootcamps = [bootcamp.format() for bootcamp in bootcamps]
+
+    data = jsonify({
+        "success": True,
+        "data": bootcamps
+    })
+
+    return data, status.HTTP_200_OK
+
+
+'''
     POST /api/v1/bootcamps
         Returns status code 201 and json object { "success": True, "data": bootcamp}
             where bootcamp is the newly create bootcamp
@@ -27,33 +48,19 @@ setup_db(app, Development.SQLALCHEMY_DATABASE_URI)
 '''
 
 
-@app.route('/api/v1/bootcamps', methods=['GET', 'POST'])
-def bootcamp():
-    if request.method == 'GET':
-        bootcamps = get_bootcamps()
-
-        if len(bootcamps) == 0:
-            abort(404)
-
-        bootcamps = [bootcamp.format() for bootcamp in bootcamps]
+@app.route('/api/v1/bootcamps', methods=['POST'])
+@requires_auth('add:bootcamps')
+def bootcamp(payload):
+    try:
+        new_bootcamp = add_bootcamp(request)
 
         data = jsonify({
             "success": True,
-            "data": bootcamps
+            "data": new_bootcamp.format()
         })
-
-        return data, status.HTTP_200_OK
-    else:
-        try:
-            new_bootcamp = add_bootcamp(request)
-
-            data = jsonify({
-                "success": True,
-                "data": new_bootcamp.format()
-            })
-            return data, status.HTTP_201_CREATED
-        except BaseException:
-            abort(422)
+        return data, status.HTTP_201_CREATED
+    except BaseException:
+        abort(422)
 
 
 '''
@@ -89,7 +96,8 @@ def get_bootcamp_by_id(id):
 
 
 @app.route('/api/v1/bootcamps/<int:id>', methods=['PUT'])
-def update_bootcamp_by_id(id):
+@requires_auth('update:bootcamps')
+def update_bootcamp_by_id(payload, id):
     try:
         updated_bootcamp = update_bootcamp(request, id)
 
@@ -110,13 +118,14 @@ def update_bootcamp_by_id(id):
 '''
     DELETE /api/v1/bootcamps/<int:id>
         Returns status code 200 and json object { "success": True }
-            
+
         Access private
 '''
 
 
 @app.route('/api/v1/bootcamps/<int:id>', methods=['DELETE'])
-def delete_bootcamp_by_id(id):
+@requires_auth('delete:bootcamps')
+def delete_bootcamp_by_id(payload, id):
     data = delete_bootcamp(id)
 
     if data is None:
@@ -130,7 +139,26 @@ def delete_bootcamp_by_id(id):
         Returns status code 200 and json object { "success": True, "data": courses}
             where courses is the list of all courses
         Access public
-    
+'''
+
+
+@app.route('/api/v1/courses', methods=['GET'])
+def courses():
+    courses = get_courses()
+
+    if len(courses) == 0:
+        abort(404)
+
+    courses = [course.format() for course in courses]
+
+    data = jsonify({
+        "success": True,
+        "data": courses
+    })
+    return data, status.HTTP_200_OK
+
+
+'''
     POST /api/v1/courses
         Returns status code 201 and json object { "success": True, "data": course}
             where course is the newly create course
@@ -138,32 +166,19 @@ def delete_bootcamp_by_id(id):
 '''
 
 
-@app.route('/api/v1/courses', methods=['GET', 'POST'])
-def course():
-    if request.method == 'GET':
-        courses = get_courses()
-
-        if len(courses) == 0:
-            abort(404)
-
-        courses = [course.format() for course in courses]
+@app.route('/api/v1/courses', methods=['POST'])
+@requires_auth('add:courses')
+def course(payload):
+    try:
+        new_course = add_course(request)
 
         data = jsonify({
             "success": True,
-            "data": courses
+            "data": new_course.format()
         })
-        return data, status.HTTP_200_OK
-    else:
-        try:
-            new_course = add_course(request)
-
-            data = jsonify({
-                "success": True,
-                "data": new_course.format()
-            })
-            return data, status.HTTP_201_CREATED
-        except:
-            abort(422)
+        return data, status.HTTP_201_CREATED
+    except:
+        abort(422)
 
 
 '''
@@ -199,7 +214,8 @@ def get_course_by_id(id):
 
 
 @app.route('/api/v1/courses/<int:id>', methods=['PUT'])
-def update_course_by_id(id):
+@requires_auth('update:courses')
+def update_course_by_id(payload, id):
     try:
         updated_course = update_course(request, id)
 
@@ -226,7 +242,8 @@ def update_course_by_id(id):
 
 
 @app.route('/api/v1/courses/<int:id>', methods=['DELETE'])
-def delete_course_by_id(id):
+@requires_auth('delete:courses')
+def delete_course_by_id(payload, id):
     data = delete_course(id)
 
     if data is None:
@@ -256,3 +273,13 @@ def unprocessable(error):
         "error": 422,
         "message": "Unprocessable"
     }), 422
+
+
+@app.errorhandler(AuthError)
+def handle_auth_error(auth_error):
+    print(auth_error.error)
+    return jsonify({
+        "success": False,
+        "error": auth_error.status_code,
+        "message": auth_error.error['message']
+    }), auth_error.status_code
