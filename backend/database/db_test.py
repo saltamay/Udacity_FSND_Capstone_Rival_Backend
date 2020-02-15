@@ -22,11 +22,15 @@ def db_test_init():
     course.insert()
 
 
+def drop_and_create_all():
+    db.drop_all()
+    db.create_all()
+
+
 def setup_db(app, db_path):
     app.config['SQLALCHEMY_DATABASE_URI'] = db_path
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
-    db.drop_all()
-    db.create_all()
+    drop_and_create_all()
     db_test_init()

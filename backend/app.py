@@ -93,17 +93,17 @@ def update_bootcamp_by_id(id):
     try:
         updated_bootcamp = update_bootcamp(request, id)
 
-        if updated_bootcamp is None:
-            abort(404)
-
         data = jsonify({
             "success": True,
             "data": updated_bootcamp.format()
         })
 
         return data, status.HTTP_200_OK
-    except:
-        abort(422)
+    except Exception as ex:
+        if ex.__class__.__name__ == 'NotFound':
+            abort(404)
+        else:
+            abort(422)
 
 
 '''
@@ -116,15 +116,12 @@ def update_bootcamp_by_id(id):
 
 @app.route('/api/v1/bootcamps/<int:id>', methods=['DELETE'])
 def delete_bootcamp_by_id(id):
-    try:
-        data = delete_bootcamp(id)
+    data = delete_bootcamp(id)
 
-        if data is None:
-            abort(404)
+    if data is None:
+        abort(404)
 
-        return data, status.HTTP_200_OK
-    except:
-        abort(422)
+    return data, status.HTTP_200_OK
 
 
 '''
@@ -228,15 +225,12 @@ def update_course_by_id(id):
 
 @app.route('/api/v1/courses/<int:id>', methods=['DELETE'])
 def delete_course_by_id(id):
-    try:
-        data = delete_course(id)
+    data = delete_course(id)
 
-        if data is None:
-            abort(404)
+    if data is None:
+        abort(404)
 
-        return data, status.HTTP_200_OK
-    except:
-        abort(422)
+    return data, status.HTTP_200_OK
 
 
 # Default port:
@@ -258,5 +252,5 @@ def unprocessable(error):
     return jsonify({
         "success": False,
         "error": 422,
-        "message": "unprocessable"
+        "message": "Unprocessable"
     }), 422
