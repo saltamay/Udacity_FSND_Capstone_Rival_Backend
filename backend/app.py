@@ -9,7 +9,7 @@ from config.config import Development
 from config.config import Test
 from database.db import db, setup_db, create_all
 from auth import AuthError, requires_auth
-from controllers.bootcamp import add_bootcamp, get_bootcamps, get_single_bootcamp, update_bootcamp, delete_bootcamp
+from controllers.bootcamp import add_bootcamp, get_bootcamps, get_single_bootcamp, get_all_courses, update_bootcamp, delete_bootcamp
 from controllers.course import add_course, get_courses, get_single_course, update_course, delete_course
 
 app = Flask(__name__)
@@ -86,6 +86,22 @@ def get_bootcamp_by_id(id):
     data = jsonify({
         "success": True,
         "data": bootcamp.format()
+    })
+    return data, status.HTTP_200_OK
+
+
+@app.route('/api/v1/bootcamps/<int:id>/courses', methods=['GET'])
+def get_bootcamp_courses(id):
+    courses = get_all_courses(id)
+
+    if courses is None:
+        abort(404)
+
+    courses = [course.format() for course in courses]
+
+    data = jsonify({
+        "success": True,
+        "data": courses
     })
     return data, status.HTTP_200_OK
 

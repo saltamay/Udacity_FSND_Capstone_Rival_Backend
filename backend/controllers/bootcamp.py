@@ -1,5 +1,6 @@
 from flask import jsonify
 from models.bootcamp import Bootcamp
+from models.course import Course
 
 
 def get_bootcamps():
@@ -9,6 +10,13 @@ def get_bootcamps():
 def get_single_bootcamp(id):
     try:
         return Bootcamp.query.filter_by(id=id).one_or_none()
+    except:
+        return None
+
+
+def get_all_courses(id):
+    try:
+        return Course.query.filter_by(bootcamp_id=id).all()
     except:
         return None
 
