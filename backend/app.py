@@ -3,10 +3,11 @@ from flask import Flask, request, jsonify, abort
 from flask_api import status
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from flask_migrate import Migrate
 
 from config.config import Development
 from config.config import Test
-from database.db import setup_db, create_all
+from database.db import db, setup_db, create_all
 from auth import AuthError, requires_auth
 from controllers.bootcamp import add_bootcamp, get_bootcamps, get_single_bootcamp, update_bootcamp, delete_bootcamp
 from controllers.course import add_course, get_courses, get_single_course, update_course, delete_course
@@ -14,6 +15,7 @@ from controllers.course import add_course, get_courses, get_single_course, updat
 app = Flask(__name__)
 setup_db(app, Development.SQLALCHEMY_DATABASE_URI)
 # setup_db(app, Test.SQLALCHEMY_DATABASE_URI)
+migrate = Migrate(app, db)
 CORS(app)
 
 

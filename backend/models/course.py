@@ -10,14 +10,17 @@ class Course(db.Model):
     tuition = db.Column(db.Integer)
     minimum_skill = db.Column(db.String(80))
     scholarships_available = db.Column(db.Boolean)
+    bootcamp_id = db.Column(db.Integer, db.ForeignKey(
+        'bootcamps.id'), nullable=False)
 
-    def __init__(self, title, description, duration, tuition, minimum_skill, scholarships_available):
+    def __init__(self, title, description, duration, tuition, minimum_skill, scholarships_available, bootcamp_id):
         self.title = title
         self.description = description
         self.duration = duration
         self.tuition = tuition
         self.minimum_skill = minimum_skill
         self.scholarships_available = scholarships_available
+        self.bootcamp_id = bootcamp_id
 
     def format(self):
         return {
@@ -27,7 +30,8 @@ class Course(db.Model):
             "duration": self.duration,
             "tuition": self.tuition,
             "minimum_skill": self.minimum_skill,
-            "scholarships_available": self.scholarships_available
+            "scholarships_available": self.scholarships_available,
+            "bootcamp_id": self.bootcamp_id
         }
 
     '''
