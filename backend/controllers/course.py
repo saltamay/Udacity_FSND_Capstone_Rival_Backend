@@ -15,19 +15,19 @@ def get_single_course(id):
 
 def add_course(request):
     course = request.get_json()
-
+    print(course)
     title = course['title']
     description = course['description']
     duration = course['duration']
     tuition = course['tuition']
-    minimum_skill = course['minimum_skill']
-    scholarships_available = course['scholarships_available']
+    minimum_skill = course['minimumSkill']
+    scholarships_available = course['scholarshipsAvailable']
 
     new_course = Course(title, description, duration, tuition,
                         minimum_skill, scholarships_available)
-
+    print(new_course)
     new_course.insert()
-
+    print(new_course)
     return new_course
 
 
@@ -43,8 +43,8 @@ def update_course(request, id):
     course.description = updated_course['description']
     course.duration = updated_course['duration']
     course.tuition = updated_course['tuition']
-    course.minimum_skill = updated_course['minimum_skill']
-    course.scholarships_available = updated_course['scholarships_available']
+    course.minimum_skill = updated_course['minimumSkill']
+    course.scholarships_available = updated_course['scholarshipsAvailable']
 
     course.update()
 

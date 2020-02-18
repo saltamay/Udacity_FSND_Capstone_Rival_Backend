@@ -15,6 +15,7 @@ class Course(db.Model):
         self.title = title
         self.description = description
         self.duration = duration
+        self.tuition = tuition
         self.minimum_skill = minimum_skill
         self.scholarships_available = scholarships_available
 

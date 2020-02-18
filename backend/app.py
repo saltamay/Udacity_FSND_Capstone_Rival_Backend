@@ -2,6 +2,7 @@ import json
 from flask import Flask, request, jsonify, abort
 from flask_api import status
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 
 from config.config import Development
 from config.config import Test
@@ -13,6 +14,7 @@ from controllers.course import add_course, get_courses, get_single_course, updat
 app = Flask(__name__)
 setup_db(app, Development.SQLALCHEMY_DATABASE_URI)
 # setup_db(app, Test.SQLALCHEMY_DATABASE_URI)
+CORS(app)
 
 
 '''
@@ -51,16 +53,16 @@ def bootcamps():
 @app.route('/api/v1/bootcamps', methods=['POST'])
 @requires_auth('add:bootcamps')
 def bootcamp(payload):
-    try:
-        new_bootcamp = add_bootcamp(request)
+    # try:
+    new_bootcamp = add_bootcamp(request)
 
-        data = jsonify({
-            "success": True,
-            "data": new_bootcamp.format()
-        })
-        return data, status.HTTP_201_CREATED
-    except BaseException:
-        abort(422)
+    data = jsonify({
+        "success": True,
+        "data": new_bootcamp.format()
+    })
+    return data, status.HTTP_201_CREATED
+    # except BaseException:
+    # abort(422)
 
 
 '''

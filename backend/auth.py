@@ -45,6 +45,7 @@ def get_token_auth_header():
         }, 401)
 
     parts = auth.split()
+
     if parts[0].lower() != 'bearer':
         raise AuthError({
             'code': 'invalid_header',
@@ -64,6 +65,7 @@ def get_token_auth_header():
         }, 401)
 
     token = parts[1]
+    print(token)
     return token
 
 

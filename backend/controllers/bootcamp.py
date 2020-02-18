@@ -23,7 +23,7 @@ def add_bootcamp(request):
     email = bootcamp['email']
     address = bootcamp['address']
     careers = bootcamp['careers']
-    job_assistance = bootcamp['job_assistance']
+    job_assistance = bootcamp['jobAssistance']
 
     new_bootcamp = Bootcamp(name, description, website,
                             phone, email, address, careers, job_assistance)
@@ -48,7 +48,7 @@ def update_bootcamp(request, id):
     bootcamp.email = updated_bootcamp['email']
     bootcamp.address = updated_bootcamp['address']
     bootcamp.careers = updated_bootcamp['careers']
-    bootcamp.job_assistance = updated_bootcamp['job_assistance']
+    bootcamp.job_assistance = updated_bootcamp['jobAssistance']
 
     bootcamp.update()
 
