@@ -2,6 +2,8 @@ import unittest
 import json
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
+from flask_migrate import Migrate
 
 from app import app
 from config.config import Test
@@ -20,6 +22,14 @@ class BootcampsTestCase(unittest.TestCase):
         self.client = self.app.test_client
         setup_db(self.app, Test.SQLALCHEMY_DATABASE_URI)
 
+        self.user_auth_header = {
+            "Authorization": f"Bearer {Test.USER_AUTH_TOKEN}"
+        }
+
+        self.admin_auth_header = {
+            "Authorization": f"Bearer {Test.ADMIN_AUTH_TOKEN}"
+        }
+
         self.new_bootcamp = {
             "name": "UofT SCS BootCamps",
             "description": "University of Toronto School of Continuing Studies (UofT SCS) Boot Camps equip you with essential skills to help guide your path to success. With strategically engineered curricula, face-to-face interaction, and expert instructors, we provide an educational experience that will shape the future of your career.",
@@ -28,7 +38,7 @@ class BootcampsTestCase(unittest.TestCase):
             "email": "bootcamp@trilogyed.com",
             "address": "158 St George St, Toronto, ON M5S 2V8",
             "careers": ["Coding", "Data Analytics", "Cybersecurity", "UX/UI", "FinTech"],
-            "job_assistance": True
+            "jobAssistance": True
         }
 
         self.dublicate_bootcamp = {
@@ -39,7 +49,9 @@ class BootcampsTestCase(unittest.TestCase):
             "email": "enroll@devworks.com",
             "address": "233 Bay State Rd Boston MA 02215",
             "careers": ["Web Development", "UI/UX", "Business"],
-            "job_assistance": False
+            "job_assistance": False,
+            "upvotes": 89,
+            "img_url": "/img-2.jpg"
         }
 
         self.updated_bootcamp = {
@@ -50,7 +62,9 @@ class BootcampsTestCase(unittest.TestCase):
             "email": "enroll@devworks.com",
             "address": "233 Bay State Rd Boston MA 02215",
             "careers": ["Web Development", "UI/UX", "Business"],
-            "job_assistance": True  # Update job assistance
+            "jobAssistance": True,  # Update job assistance
+            "upvotes": 89,
+            "img_url": "/img-2.jpg"
         }
 
         self.updated_bootcamp_malformed = {
@@ -61,7 +75,9 @@ class BootcampsTestCase(unittest.TestCase):
             "email": "enroll@devworks.com",
             "address": "233 Bay State Rd Boston MA 02215",
             "careers": ["Web Development", "UI/UX", "Business"],
-            "job_assistance": False
+            "job_assistance": False,
+            "upvotes": 89,
+            "img_url": "/img-2.jpg"
         }
 
     def tearDown(self):
@@ -69,7 +85,8 @@ class BootcampsTestCase(unittest.TestCase):
         pass
 
     def test_add_bootcamp(self):
-        res = self.client().post('/api/v1/bootcamps', json=self.new_bootcamp)
+        res = self.client().post('/api/v1/bootcamps',
+                                 headers=self.admin_auth_header, json=self.new_bootcamp)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 201)
@@ -86,7 +103,7 @@ class BootcampsTestCase(unittest.TestCase):
         self.assertTrue(len(data['data']))
 
     def test_get_bootcamp_by_id(self):
-        res = self.client().get('/api/v1/bootcamps/1')
+        res = self.client().get('/api/v1/bootcamps/1', headers=self.user_auth_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -95,7 +112,8 @@ class BootcampsTestCase(unittest.TestCase):
         self.assertTrue(len(data['data']))
 
     def test_update_bootcamp_by_id(self):
-        res = self.client().put('/api/v1/bootcamps/1', json=self.updated_bootcamp)
+        res = self.client().put('/api/v1/bootcamps/1',
+                                headers=self.admin_auth_header, json=self.updated_bootcamp)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -104,7 +122,8 @@ class BootcampsTestCase(unittest.TestCase):
         self.assertTrue(len(data['data']))
 
     def test_delete_bootcamp_by_id(self):
-        res = self.client().delete('/api/v1/bootcamps/1')
+        self.client().delete('/api/v1/courses/1', headers=self.admin_auth_header)
+        res = self.client().delete('/api/v1/bootcamps/1', headers=self.admin_auth_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -112,7 +131,8 @@ class BootcampsTestCase(unittest.TestCase):
 
     def test_404_sent_when_bootcamps_empty(self):
         '''Remove the element from the db'''
-        self.client().delete('/api/v1/bootcamps/1')
+        self.client().delete('/api/v1/courses/1', headers=self.admin_auth_header)
+        self.client().delete('/api/v1/bootcamps/1', headers=self.admin_auth_header)
 
         res = self.client().get('/api/v1/bootcamps')
         data = json.loads(res.data)
@@ -122,7 +142,8 @@ class BootcampsTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'Not found')
 
     def test_422_if_add_bootcamp_fails(self):
-        res = self.client().post('/api/v1/bootcamps', json=self.dublicate_bootcamp)
+        res = self.client().post('/api/v1/bootcamps', headers=self.admin_auth_header,
+                                 json=self.dublicate_bootcamp)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 422)
@@ -130,7 +151,7 @@ class BootcampsTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'Unprocessable')
 
     def test_404_if_bootcamp_does_not_exist(self):
-        res = self.client().get('/api/v1/bootcamps/1000')
+        res = self.client().get('/api/v1/bootcamps/1000', headers=self.user_auth_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -138,7 +159,8 @@ class BootcampsTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'Not found')
 
     def test_404_if_update_bootcamp_fails(self):
-        res = self.client().put('/api/v1/bootcamps/1000', json=self.updated_bootcamp)
+        res = self.client().put('/api/v1/bootcamps/1000',
+                                headers=self.admin_auth_header, json=self.updated_bootcamp)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -146,7 +168,8 @@ class BootcampsTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'Not found')
 
     def test_422_if_update_bootcamp_fails(self):
-        res = self.client().put('/api/v1/bootcamps/1', json=self.updated_bootcamp_malformed)
+        res = self.client().put('/api/v1/bootcamps/1', headers=self.admin_auth_header,
+                                json=self.updated_bootcamp_malformed)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 422)
@@ -154,12 +177,28 @@ class BootcampsTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'Unprocessable')
 
     def test_404_if_delete_bootcamp_fails(self):
-        res = self.client().delete('/api/v1/bootcamps/1000')
+        res = self.client().delete('/api/v1/bootcamps/1000', headers=self.admin_auth_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Not found')
+
+    def test_401_if_user_auth_missing(self):
+        res = self.client().get('/api/v1/bootcamps/1')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 401)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Authorization header is expected.')
+
+    def test_401_if_admin_auth_missing(self):
+        res = self.client().delete('/api/v1/bootcamps/1')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 401)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Authorization header is expected.')
 
 
 '''Make the tests executable'''

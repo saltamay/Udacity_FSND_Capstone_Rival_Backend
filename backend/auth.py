@@ -65,7 +65,6 @@ def get_token_auth_header():
         }, 401)
 
     token = parts[1]
-    print(token)
     return token
 
 
@@ -116,6 +115,8 @@ def check_permissions(permission, payload):
 
 def verify_decode_jwt(token):
     '''Retrieve the JWKS from the Auth0 endpoint /.well-known/jwks.json'''
+    print(token)
+    # print(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
     jsonurl = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
     jwks = json.loads(jsonurl.read())
     '''Grab the kid property from the Header of the decoded JWT'''

@@ -209,16 +209,16 @@ def courses():
 @app.route('/api/v1/courses', methods=['POST'])
 @requires_auth('add:courses')
 def course(payload):
-    # try:
-    new_course = add_course(request)
+    try:
+        new_course = add_course(request)
 
-    data = jsonify({
-        "success": True,
-        "data": new_course.format_long()
-    })
-    return data, status.HTTP_201_CREATED
-    # except:
-    # abort(422)
+        data = jsonify({
+            "success": True,
+            "data": new_course.format_long()
+        })
+        return data, status.HTTP_201_CREATED
+    except:
+        abort(422)
 
 
 '''
@@ -336,7 +336,7 @@ def unprocessable(error):
 
 
 @app.errorhandler(400)
-def not_found(error):
+def bad_request(error):
     return jsonify({
         "success": False,
         "error": 400,
@@ -345,7 +345,7 @@ def not_found(error):
 
 
 @app.errorhandler(500)
-def not_found(error):
+def internal_error(error):
     return jsonify({
         "success": False,
         "error": 500,
