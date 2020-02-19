@@ -276,7 +276,7 @@ def update_course_by_id(payload, id):
 
 @app.route('/api/v1/courses/<int:id>', methods=['PATCH'])
 @requires_auth('update:courses')
-def patch_bootcamp_by_id(id):
+def patch_course_by_id(id):
     try:
         updated_course = patch_course(request, id)
         data = jsonify({
@@ -333,6 +333,24 @@ def unprocessable(error):
         "error": 422,
         "message": "Unprocessable"
     }), 422
+
+
+@app.errorhandler(400)
+def not_found(error):
+    return jsonify({
+        "success": False,
+        "error": 400,
+        "message": "Bad request"
+    }), 400
+
+
+@app.errorhandler(500)
+def not_found(error):
+    return jsonify({
+        "success": False,
+        "error": 500,
+        "message": "Internal server error"
+    }), 500
 
 
 @app.errorhandler(AuthError)
