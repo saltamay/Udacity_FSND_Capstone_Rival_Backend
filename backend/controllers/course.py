@@ -55,6 +55,33 @@ def update_course(request, id):
     return course
 
 
+def patch_course(request, id):
+    course = Course.query.filter_by(id=id).one_or_none()
+
+    if course is None:
+        return None
+
+    updated_course = course.format_long()
+    updates = request.get_json()
+
+    for key in updates:
+        updated_course[key] = updates[key]
+
+    course.name = updated_course['name']
+    course.description = updated_course['description']
+    course.website = updated_course['website']
+    course.phone = updated_course['phone']
+    course.email = updated_course['email']
+    course.address = updated_course['address']
+    course.careers = updated_course['careers']
+    course.job_assistance = updated_course['job_assistance']
+    course.upvotes = updated_course['upvotes']
+
+    course.update()
+
+    return course
+
+
 def delete_course(id):
     course = Course.query.filter_by(id=id).one_or_none()
 

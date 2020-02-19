@@ -67,6 +67,33 @@ def update_bootcamp(request, id):
     return bootcamp
 
 
+def patch_bootcamp(request, id):
+    bootcamp = Bootcamp.query.filter_by(id=id).one_or_none()
+
+    if bootcamp is None:
+        return None
+
+    updated_bootcamp = bootcamp.format_long()
+    updates = request.get_json()
+
+    for key in updates:
+        updated_bootcamp[key] = updates[key]
+
+    bootcamp.name = updated_bootcamp['name']
+    bootcamp.description = updated_bootcamp['description']
+    bootcamp.website = updated_bootcamp['website']
+    bootcamp.phone = updated_bootcamp['phone']
+    bootcamp.email = updated_bootcamp['email']
+    bootcamp.address = updated_bootcamp['address']
+    bootcamp.careers = updated_bootcamp['careers']
+    bootcamp.job_assistance = updated_bootcamp['job_assistance']
+    bootcamp.upvotes = updated_bootcamp['upvotes']
+
+    bootcamp.update()
+
+    return bootcamp
+
+
 def delete_bootcamp(id):
     bootcamp = Bootcamp.query.filter_by(id=id).one_or_none()
 

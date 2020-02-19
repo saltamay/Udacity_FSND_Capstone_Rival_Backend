@@ -9,8 +9,8 @@ from config.config import Development
 from config.config import Test
 from database.db import db, setup_db, create_all
 from auth import AuthError, requires_auth
-from controllers.bootcamp import add_bootcamp, get_bootcamps, get_single_bootcamp, get_all_courses, update_bootcamp, delete_bootcamp
-from controllers.course import add_course, get_courses, get_single_course, update_course, delete_course
+from controllers.bootcamp import add_bootcamp, get_bootcamps, get_single_bootcamp, get_all_courses, update_bootcamp, patch_bootcamp, delete_bootcamp
+from controllers.course import add_course, get_courses, get_single_course, update_course, patch_course, delete_course
 
 app = Flask(__name__)
 setup_db(app, Development.SQLALCHEMY_DATABASE_URI)
@@ -136,6 +136,25 @@ def update_bootcamp_by_id(payload, id):
             abort(422)
 
 
+@app.route('/api/v1/bootcamps/<int:id>', methods=['PATCH'])
+@requires_auth('update:bootcamps')
+def patch_bootcamp_by_id(id):
+    try:
+        updated_bootcamp = patch_bootcamp(request, id)
+        data = jsonify({
+            "success": True,
+            "data": updated_bootcamp.format_long()
+        })
+
+        return data, status.HTTP_200_OK
+    except Exception as ex:
+        print(ex.__class__.__name__)
+        if ex.__class__.__name__ == 'AttributeError':
+            abort(404)
+        else:
+            abort(422)
+
+
 '''
     DELETE /api/v1/bootcamps/<int:id>
         Returns status code 200 and json object { "success": True }
@@ -241,6 +260,25 @@ def update_course_by_id(payload, id):
     try:
         updated_course = update_course(request, id)
 
+        data = jsonify({
+            "success": True,
+            "data": updated_course.format_long()
+        })
+
+        return data, status.HTTP_200_OK
+    except Exception as ex:
+        print(ex.__class__.__name__)
+        if ex.__class__.__name__ == 'AttributeError':
+            abort(404)
+        else:
+            abort(422)
+
+
+@app.route('/api/v1/courses/<int:id>', methods=['PATCH'])
+@requires_auth('update:courses')
+def patch_bootcamp_by_id(id):
+    try:
+        updated_course = patch_course(request, id)
         data = jsonify({
             "success": True,
             "data": updated_course.format_long()
