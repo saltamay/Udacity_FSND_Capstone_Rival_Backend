@@ -34,7 +34,7 @@ def bootcamps():
     if len(bootcamps) == 0:
         abort(404)
 
-    bootcamps = [bootcamp.format() for bootcamp in bootcamps]
+    bootcamps = [bootcamp.format_short() for bootcamp in bootcamps]
 
     data = jsonify({
         "success": True,
@@ -55,16 +55,16 @@ def bootcamps():
 @app.route('/api/v1/bootcamps', methods=['POST'])
 @requires_auth('add:bootcamps')
 def bootcamp(payload):
-    # try:
-    new_bootcamp = add_bootcamp(request)
+    try:
+        new_bootcamp = add_bootcamp(request)
 
-    data = jsonify({
-        "success": True,
-        "data": new_bootcamp.format()
-    })
-    return data, status.HTTP_201_CREATED
-    # except BaseException:
-    # abort(422)
+        data = jsonify({
+            "success": True,
+            "data": new_bootcamp.format_long()
+        })
+        return data, status.HTTP_201_CREATED
+    except:
+        abort(422)
 
 
 '''
@@ -77,7 +77,8 @@ def bootcamp(payload):
 
 
 @app.route('/api/v1/bootcamps/<int:id>', methods=['GET'])
-def get_bootcamp_by_id(id):
+@requires_auth('get:bootcamp-detail')
+def get_bootcamp_by_id(payload, id):
     bootcamp = get_single_bootcamp(id)
 
     if bootcamp is None:
@@ -85,7 +86,7 @@ def get_bootcamp_by_id(id):
 
     data = jsonify({
         "success": True,
-        "data": bootcamp.format()
+        "data": bootcamp.format_long()
     })
     return data, status.HTTP_200_OK
 
@@ -97,7 +98,7 @@ def get_bootcamp_courses(id):
     if courses is None:
         abort(404)
 
-    courses = [course.format() for course in courses]
+    courses = [course.format_long() for course in courses]
 
     data = jsonify({
         "success": True,
@@ -123,7 +124,7 @@ def update_bootcamp_by_id(payload, id):
 
         data = jsonify({
             "success": True,
-            "data": updated_bootcamp.format()
+            "data": updated_bootcamp.format_long()
         })
 
         return data, status.HTTP_200_OK
@@ -169,7 +170,7 @@ def courses():
     if len(courses) == 0:
         abort(404)
 
-    courses = [course.format() for course in courses]
+    courses = [course.format_short() for course in courses]
 
     data = jsonify({
         "success": True,
@@ -189,16 +190,16 @@ def courses():
 @app.route('/api/v1/courses', methods=['POST'])
 @requires_auth('add:courses')
 def course(payload):
-    try:
-        new_course = add_course(request)
+    # try:
+    new_course = add_course(request)
 
-        data = jsonify({
-            "success": True,
-            "data": new_course.format()
-        })
-        return data, status.HTTP_201_CREATED
-    except:
-        abort(422)
+    data = jsonify({
+        "success": True,
+        "data": new_course.format_long()
+    })
+    return data, status.HTTP_201_CREATED
+    # except:
+    # abort(422)
 
 
 '''
@@ -211,7 +212,8 @@ def course(payload):
 
 
 @app.route('/api/v1/courses/<int:id>', methods=['GET'])
-def get_course_by_id(id):
+@requires_auth('get:course-detail')
+def get_course_by_id(payload, id):
     course = get_single_course(id)
 
     if course is None:
@@ -219,7 +221,7 @@ def get_course_by_id(id):
 
     data = jsonify({
         "success": True,
-        "data": course.format()
+        "data": course.format_long()
     })
     return data, status.HTTP_200_OK
 
@@ -241,7 +243,7 @@ def update_course_by_id(payload, id):
 
         data = jsonify({
             "success": True,
-            "data": updated_course.format()
+            "data": updated_course.format_long()
         })
 
         return data, status.HTTP_200_OK

@@ -28,7 +28,17 @@ class Bootcamp(db.Model):
         self.upvotes = upvotes
         self.img_url = img_url
 
-    def format(self):
+    def format_short(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "address": self.address,
+            "careers": self.careers,
+            "upvotes": self.upvotes,
+            "img_url": self.img_url
+        }
+
+    def format_long(self):
         return {
             "id": self.id,
             "name": self.name,

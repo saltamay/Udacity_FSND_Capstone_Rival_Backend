@@ -24,7 +24,15 @@ class Course(db.Model):
         self.upvotes = upvotes
         self.bootcamp_id = bootcamp_id
 
-    def format(self):
+    def format_short(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "upvotes": self.upvotes,
+            "bootcamp_id": self.bootcamp_id
+        }
+
+    def format_long(self):
         return {
             "id": self.id,
             "title": self.title,

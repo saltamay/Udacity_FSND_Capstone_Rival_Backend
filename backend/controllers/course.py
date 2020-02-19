@@ -27,7 +27,8 @@ def add_course(request):
     upvotes = rand_upvote()
 
     new_course = Course(title, description, duration, tuition,
-                        minimum_skill, scholarships_available, bootcamp_id, upvotes)
+                        minimum_skill, scholarships_available, upvotes, bootcamp_id)
+    print(course)
     new_course.insert()
 
     return new_course
@@ -47,6 +48,7 @@ def update_course(request, id):
     course.tuition = updated_course['tuition']
     course.minimum_skill = updated_course['minimumSkill']
     course.scholarships_available = updated_course['scholarshipsAvailable']
+    course.upvotes = updated_course['upvotes']
 
     course.update()
 

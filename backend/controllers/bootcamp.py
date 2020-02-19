@@ -60,6 +60,7 @@ def update_bootcamp(request, id):
     bootcamp.address = updated_bootcamp['address']
     bootcamp.careers = updated_bootcamp['careers']
     bootcamp.job_assistance = updated_bootcamp['jobAssistance']
+    bootcamp.upvotes = updated_bootcamp['upvotes']
 
     bootcamp.update()
 
