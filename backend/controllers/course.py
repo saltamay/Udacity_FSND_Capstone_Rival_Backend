@@ -10,7 +10,7 @@ def get_courses():
 def get_single_course(id):
     try:
         return Course.query.filter_by(id=id).one_or_none()
-    except:
+    except BaseException:
         return None
 
 
@@ -27,7 +27,8 @@ def add_course(request):
     upvotes = rand_upvote()
 
     new_course = Course(title, description, duration, tuition,
-                        minimum_skill, scholarships_available, upvotes, bootcamp_id)
+                        minimum_skill, scholarships_available,
+                        upvotes, bootcamp_id)
     print(course)
     new_course.insert()
 

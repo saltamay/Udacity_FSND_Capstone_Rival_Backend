@@ -14,7 +14,9 @@ class Course(db.Model):
     bootcamp_id = db.Column(db.Integer, db.ForeignKey(
         'bootcamps.id'), nullable=False)
 
-    def __init__(self, title, description, duration, tuition, minimum_skill, scholarships_available, upvotes, bootcamp_id):
+    def __init__(self, title, description, duration,
+                 tuition, minimum_skill, scholarships_available,
+                 upvotes, bootcamp_id):
         self.title = title
         self.description = description
         self.duration = duration

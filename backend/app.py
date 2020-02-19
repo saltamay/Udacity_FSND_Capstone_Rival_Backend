@@ -9,8 +9,8 @@ from config.config import Development
 from config.config import Test
 from database.db import db, setup_db, create_all
 from auth import AuthError, requires_auth
-from controllers.bootcamp import add_bootcamp, get_bootcamps, get_single_bootcamp, get_all_courses, update_bootcamp, patch_bootcamp, delete_bootcamp
-from controllers.course import add_course, get_courses, get_single_course, update_course, patch_course, delete_course
+from controllers.bootcamp import *
+from controllers.course import *
 
 app = Flask(__name__)
 setup_db(app, Development.SQLALCHEMY_DATABASE_URI)
@@ -21,7 +21,8 @@ CORS(app)
 
 '''
     GET /api/v1/bootcamps
-        Returns status code 200 and json object { "success": True, "data": bootcamps}
+        Returns status code 200 and
+            json object { "success": True, "data": bootcamps}
             where bootcamps is the list of all bootcamps
         Access public
 '''
@@ -46,7 +47,8 @@ def bootcamps():
 
 '''
     POST /api/v1/bootcamps
-        Returns status code 201 and json object { "success": True, "data": bootcamp}
+        Returns status code 201 and
+            json object { "success": True, "data": bootcamp}
             where bootcamp is the newly create bootcamp
         Access Private
 '''
@@ -63,13 +65,14 @@ def bootcamp(payload):
             "data": new_bootcamp.format_long()
         })
         return data, status.HTTP_201_CREATED
-    except:
+    except BaseException:
         abort(422)
 
 
 '''
     GET /api/v1/bootcamps/<int:id>
-        Returns status code 200 and json object { "success": True, "data": bootcamp}
+        Returns status code 200 and
+            json object { "success": True, "data": bootcamp}
             where bootcamp is the bootcamp with the id of id
             that is defined within the query string
         Access public
@@ -109,7 +112,8 @@ def get_bootcamp_courses(id):
 
 '''
     PUT /api/v1/bootcamps/<int:id>
-        Returns status code 200 and json object { "success": True, "data": bootcamp}
+        Returns status code 200 and
+            json object { "success": True, "data": bootcamp}
             where bootcamp is the updated bootcamp with the id of id
             that is defined within the query string
         Access private
@@ -176,7 +180,8 @@ def delete_bootcamp_by_id(payload, id):
 
 '''
     GET /api/v1/courses
-        Returns status code 200 and json object { "success": True, "data": courses}
+        Returns status code 200 and
+            json object { "success": True, "data": courses}
             where courses is the list of all courses
         Access public
 '''
@@ -200,7 +205,8 @@ def courses():
 
 '''
     POST /api/v1/courses
-        Returns status code 201 and json object { "success": True, "data": course}
+        Returns status code 201 and
+            json object { "success": True, "data": course}
             where course is the newly create course
         Access Private
 '''
@@ -217,13 +223,14 @@ def course(payload):
             "data": new_course.format_long()
         })
         return data, status.HTTP_201_CREATED
-    except:
+    except BaseException:
         abort(422)
 
 
 '''
     GET /api/v1/courses/<int:id>
-        Returns status code 200 and json object { "success": True, "data": course}
+        Returns status code 200 and
+            json object { "success": True, "data": course}
             where course is the course with the id of id
             that is defined within the query string
         Access public
@@ -247,7 +254,8 @@ def get_course_by_id(payload, id):
 
 '''
     PUT /api/v1/courses/<int:id>
-        Returns status code 200 and json object { "success": True, "data": course}
+        Returns status code 200 and
+            json object { "success": True, "data": course}
             where course is the updated course with the id of id
             that is defined within the query string
         Access private
@@ -296,7 +304,7 @@ def patch_course_by_id(id):
 '''
     DELETE /api/v1/courses/<int:id>
         Returns status code 200 and json object { "success": True }
-            
+
         Access private
 '''
 

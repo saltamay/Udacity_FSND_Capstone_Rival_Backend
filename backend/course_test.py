@@ -32,7 +32,11 @@ class CoursesTestCase(unittest.TestCase):
 
         self.new_course = {
             "title": "Front End Web Development",
-            "description": "This course will provide you with all of the essentials to become a successful frontend web developer. You will learn to master HTML, CSS and front end JavaScript, along with tools like Git, VSCode and front end frameworks like Vue",
+            "description": "This course will provide you with" +
+            "all of the essentials to become a successful" +
+            "frontend web developer. You will learn to master" +
+            "HTML, CSS and front end JavaScript, along with tools like Git," +
+            "VSCode and front end frameworks like Vue",
             "duration": 8,
             "tuition": 8000,
             "minimumSkill": "beginner",
@@ -42,18 +46,23 @@ class CoursesTestCase(unittest.TestCase):
 
         self.dublicate_course = {
             "title": "Full Stack Web Development",
-            "description": "In this course you will learn full stack web development, first learning all about the frontend with HTML/CSS/JS/Vue and then the backend with Node.js/Express/MongoDB",
+            "description": "In this course you will learn full stack" +
+            "web development, first learning all about the frontend" +
+            "with HTML/CSS/JS/Vue and then the backend with" +
+            "Node.js/Express/MongoDB",
             "duration": 12,
             "tuition": 10000,
             "minimumSkill": "intermediate",
             "scholarshipsAvailable": True,
             "upvotes": 93,
-            "bootcampId": 1
-        }
+            "bootcampId": 1}
 
         self.updated_course = {
             "title": "Full Stack Web Development",
-            "description": "In this course you will learn full stack web development, first learning all about the frontend with HTML/CSS/JS/Vue and then the backend with Node.js/Express/MongoDB",
+            "description": "In this course you will learn full stack" +
+            "web development, first learning all about the frontend" +
+            "with HTML/CSS/JS/Vue and then the backend" +
+            "with Node.js/Express/MongoDB",
             "duration": 12,
             "tuition": 10000,
             "minimumSkill": "intermediate",
@@ -63,7 +72,10 @@ class CoursesTestCase(unittest.TestCase):
 
         self.updated_course_malformed = {
             "title": "Full Stack Web Development",
-            "description": "In this course you will learn full stack web development, first learning all about the frontend with HTML/CSS/JS/Vue and then the backend with Node.js/Express/MongoDB",
+            "description": "In this course you will learn full stack" +
+            "web development, first learning all about the frontend" +
+            "with HTML/CSS/JS/Vue and then the backend" +
+            "with Node.js/Express/MongoDB",
             "duration": 12,
             "tuition": 10000,
             "minimum_skill intermediate"
@@ -77,8 +89,10 @@ class CoursesTestCase(unittest.TestCase):
         pass
 
     def test_add_course(self):
-        res = self.client().post('/api/v1/courses',
-                                 headers=self.admin_auth_header, json=self.new_course)
+        res = self.client().post(
+            '/api/v1/courses',
+            headers=self.admin_auth_header,
+            json=self.new_course)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 201)
@@ -95,7 +109,8 @@ class CoursesTestCase(unittest.TestCase):
         self.assertTrue(len(data['data']))
 
     def test_get_course_by_id(self):
-        res = self.client().get('/api/v1/courses/1', headers=self.user_auth_header)
+        res = self.client().get('/api/v1/courses/1',
+                                headers=self.user_auth_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -104,8 +119,10 @@ class CoursesTestCase(unittest.TestCase):
         self.assertTrue(len(data['data']))
 
     def test_update_course_by_id(self):
-        res = self.client().put('/api/v1/courses/1',
-                                headers=self.admin_auth_header, json=self.updated_course)
+        res = self.client().put(
+            '/api/v1/courses/1',
+            headers=self.admin_auth_header,
+            json=self.updated_course)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -114,7 +131,8 @@ class CoursesTestCase(unittest.TestCase):
         self.assertTrue(len(data['data']))
 
     def test_delete_course_by_id(self):
-        res = self.client().delete('/api/v1/courses/1', headers=self.admin_auth_header)
+        res = self.client().delete('/api/v1/courses/1',
+                                   headers=self.admin_auth_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -122,7 +140,8 @@ class CoursesTestCase(unittest.TestCase):
 
     def test_404_sent_when_courses_empty(self):
         '''Remove the element from the db'''
-        self.client().delete('/api/v1/courses/1', headers=self.admin_auth_header)
+        self.client().delete('/api/v1/courses/1',
+                             headers=self.admin_auth_header)
 
         res = self.client().get('/api/v1/courses')
         data = json.loads(res.data)
@@ -132,8 +151,10 @@ class CoursesTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'Not found')
 
     def test_422_if_add_course_fails(self):
-        res = self.client().post('/api/v1/courses', headers=self.admin_auth_header,
-                                 json=self.dublicate_course)
+        res = self.client().post(
+            '/api/v1/courses',
+            headers=self.admin_auth_header,
+            json=self.dublicate_course)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 422)
@@ -141,7 +162,8 @@ class CoursesTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'Unprocessable')
 
     def test_404_if_course_does_not_exist(self):
-        res = self.client().get('/api/v1/courses/1000', headers=self.user_auth_header)
+        res = self.client().get('/api/v1/courses/1000',
+                                headers=self.user_auth_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -149,8 +171,10 @@ class CoursesTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'Not found')
 
     def test_404_if_update_course_fails(self):
-        res = self.client().put('/api/v1/courses/1000',
-                                headers=self.admin_auth_header, json=self.updated_course)
+        res = self.client().put(
+            '/api/v1/courses/1000',
+            headers=self.admin_auth_header,
+            json=self.updated_course)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -158,8 +182,10 @@ class CoursesTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'Not found')
 
     def test_422_if_update_course_fails(self):
-        res = self.client().put('/api/v1/courses/1', headers=self.admin_auth_header,
-                                json=self.updated_course_malformed)
+        res = self.client().put(
+            '/api/v1/courses/1',
+            headers=self.admin_auth_header,
+            json=self.updated_course_malformed)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 422)
@@ -167,7 +193,9 @@ class CoursesTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'Unprocessable')
 
     def test_404_if_delete_course_fails(self):
-        res = self.client().delete('/api/v1/courses/1000', headers=self.admin_auth_header)
+        res = self.client().delete(
+            '/api/v1/courses/1000',
+            headers=self.admin_auth_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)

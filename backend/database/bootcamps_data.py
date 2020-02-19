@@ -1,17 +1,25 @@
 bootcamps = [
     {
         "name": "UofT SCS BootCamps",
-        "description": "University of Toronto School of Continuing Studies (UofT SCS) Boot Camps equip you with essential skills to help guide your path to success. With strategically engineered curricula, face-to-face interaction, and expert instructors, we provide an educational experience that will shape the future of your career.",
+        "description": "University of Toronto School of " +
+        "Continuing Studies (UofT SCS) Boot Camps equip you " +
+        "with essential skills to help guide your path to success. " +
+        "With strategically engineered curricula, face-to-face interaction, " +
+        "and expert instructors, we provide an educational experience " +
+        "that will shape the future of your career.",
         "website": "bootcamp.learn.utoronto.ca",
         "phone": "(647) 245-1020",
         "email" "bootcamp@trilogyed.com"
         "address": "158 St George St, Toronto, ON M5S 2V8",
-        "careers": ["Coding", "Data Analytics", "Cybersecurity", "UX/UI", "FinTech"],
+        "careers": ["Coding", "Data Analytics",
+                    "Cybersecurity", "UX/UI", "FinTech"],
         "job_assistance": True
     },
     {
         "name": "Devworks Bootcamp",
-        "description": "Devworks is a full stack JavaScript Bootcamp located in the heart of Boston that focuses on the technologies you need to get a high paying job as a web developer",
+        "description": "Devworks is a full stack JavaScript Bootcamp " +
+        "located in the heart of Boston that focuses on the technologies " +
+        "you need to get a high paying job as a web developer ",
         "website": "https://devworks.com",
         "phone": "(111) 111-1111",
         "email": "enroll@devworks.com",
@@ -21,7 +29,9 @@ bootcamps = [
     },
     {
         "name": "ModernTech Bootcamp",
-        "description": "ModernTech has one goal, and that is to make you a rockstar developer and/or designer with a six figure salary. We teach both development and UI/UX",
+        "description": "ModernTech has one goal, and that is to make " +
+        "you a rockstar developer and/or designer with a six figure " +
+        "salary. We teach both development and UI/UX",
         "website": "https://moderntech.com",
         "phone": "(222) 222-2222",
         "email": "enroll@moderntech.com",
@@ -31,7 +41,10 @@ bootcamps = [
     },
     {
         "name": "Codemasters",
-        "description": "Is coding your passion? Codemasters will give you the skills and the tools to become the best developer possible. We specialize in full stack web development and data science",
+        "description": "Is coding your passion? Codemasters will give " +
+        "you the skills and the tools to become the best " +
+        "developer possible. We specialize in full stack " +
+        "web development and data science",
         "website": "https://codemasters.com",
         "phone": "(333) 333-3333",
         "email": "enroll@codemasters.com",
@@ -41,7 +54,10 @@ bootcamps = [
     },
     {
         "name": "Devcentral Bootcamp",
-        "description": "Is coding your passion? Codemasters will give you the skills and the tools to become the best developer possible. We specialize in front end and full stack web development",
+        "description": "Is coding your passion? Codemasters " +
+        "will give you the skills and the tools to become the " +
+        "best developer possible. We specialize in front end " +
+        "and full stack web development",
         "website": "https://devcentral.com",
         "phone": "(444) 444-4444",
         "email": "enroll@devcentral.com",

@@ -16,7 +16,9 @@ class Bootcamp(db.Model):
     img_url = db.Column(db.String(80))
     courses = db.relationship('Course', backref='bootcamp', lazy=True)
 
-    def __init__(self, name, description, website, phone, email, address, careers, job_assistance, upvotes, img_url):
+    def __init__(self, name, description, website,
+                 phone, email, address, careers, job_assistance,
+                 upvotes, img_url):
         self.name = name
         self.description = description
         self.website = website

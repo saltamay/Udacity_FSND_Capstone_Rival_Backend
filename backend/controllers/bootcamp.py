@@ -11,14 +11,14 @@ def get_bootcamps():
 def get_single_bootcamp(id):
     try:
         return Bootcamp.query.filter_by(id=id).one_or_none()
-    except:
+    except BaseException:
         return None
 
 
 def get_all_courses(id):
     try:
         return Course.query.filter_by(bootcamp_id=id).all()
-    except:
+    except BaseException:
         return None
 
 
@@ -37,7 +37,8 @@ def add_bootcamp(request):
     img_url = f'img-{rand_img_number()}.jpg'
 
     new_bootcamp = Bootcamp(name, description, website,
-                            phone, email, address, careers, job_assistance, upvotes, img_url)
+                            phone, email, address, careers,
+                            job_assistance, upvotes, img_url)
 
     new_bootcamp.insert()
 
