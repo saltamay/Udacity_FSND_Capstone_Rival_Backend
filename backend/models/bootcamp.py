@@ -12,9 +12,11 @@ class Bootcamp(db.Model):
     address = db.Column(db.String(120))
     careers = db.Column(db.ARRAY(db.String(80)))
     job_assistance = db.Column(db.Boolean)
+    upvotes = db.Column(db.Integer)
+    img_url = db.Column(db.String(80))
     courses = db.relationship('Course', backref='bootcamp', lazy=True)
 
-    def __init__(self, name, description, website, phone, email, address, careers, job_assistance):
+    def __init__(self, name, description, website, phone, email, address, careers, job_assistance, upvotes, img_url):
         self.name = name
         self.description = description
         self.website = website
@@ -23,6 +25,8 @@ class Bootcamp(db.Model):
         self.address = address
         self.careers = careers
         self.job_assistance = job_assistance
+        self.upvotes = upvotes
+        self.img_url = img_url
 
     def format(self):
         return {
@@ -34,7 +38,9 @@ class Bootcamp(db.Model):
             "email": self.email,
             "address": self.address,
             "careers": self.careers,
-            "job_assistance": self.job_assistance
+            "job_assistance": self.job_assistance,
+            "upvotes": self.upvotes,
+            "img_url": self.img_url
         }
 
     '''

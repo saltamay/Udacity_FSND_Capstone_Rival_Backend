@@ -1,5 +1,6 @@
 from flask import jsonify
 from models.course import Course
+from utils import rand_upvote
 
 
 def get_courses():
@@ -23,9 +24,10 @@ def add_course(request):
     minimum_skill = course['minimumSkill']
     scholarships_available = course['scholarshipsAvailable']
     bootcamp_id = course['bootcampId']
+    upvotes = rand_upvote()
 
     new_course = Course(title, description, duration, tuition,
-                        minimum_skill, scholarships_available, bootcamp_id)
+                        minimum_skill, scholarships_available, bootcamp_id, upvotes)
     new_course.insert()
 
     return new_course

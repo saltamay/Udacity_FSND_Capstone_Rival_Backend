@@ -1,6 +1,7 @@
 from flask import jsonify
 from models.bootcamp import Bootcamp
 from models.course import Course
+from utils import rand_upvote, rand_img_number
 
 
 def get_bootcamps():
@@ -32,9 +33,11 @@ def add_bootcamp(request):
     address = bootcamp['address']
     careers = bootcamp['careers']
     job_assistance = bootcamp['jobAssistance']
+    upvotes = rand_upvote()
+    img_url = f'img-{rand_img_number()}.jpg'
 
     new_bootcamp = Bootcamp(name, description, website,
-                            phone, email, address, careers, job_assistance)
+                            phone, email, address, careers, job_assistance, upvotes, img_url)
 
     new_bootcamp.insert()
 
