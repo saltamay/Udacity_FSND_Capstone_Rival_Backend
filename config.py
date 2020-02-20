@@ -5,6 +5,10 @@ load_dotenv()
 # Grabs the folder where the script runs.
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
+SQLALCHEMY_TRACK_MODIFICATIONS = os.getenv(
+    'SQLALCHEMY_TRACK_MODIFICATIONS')
+
 
 class Development:
     # FLASK_ENV = 'development'

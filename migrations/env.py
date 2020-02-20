@@ -1,4 +1,7 @@
 from __future__ import with_statement
+from dotenv import load_dotenv
+import os
+from flask import current_app
 
 import logging
 from logging.config import fileConfig
@@ -21,7 +24,8 @@ logger = logging.getLogger('alembic.env')
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from flask import current_app
+load_dotenv()
+SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
 config.set_main_option(
     'sqlalchemy.url', current_app.config.get(
         'SQLALCHEMY_DATABASE_URI').replace('%', '%%'))
