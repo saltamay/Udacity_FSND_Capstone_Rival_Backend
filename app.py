@@ -26,7 +26,7 @@ CORS(app)
 
 @app.route('/api/v1/bootcamps', methods=['GET'])
 def index():
-    return data = jsonify({
+    return jsonify({
         "success": True,
         "message": 'Welcome'
     })
