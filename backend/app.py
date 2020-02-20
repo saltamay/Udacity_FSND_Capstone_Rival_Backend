@@ -5,8 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
 
-from config.config import Development
-from config.config import Test
+from config import Development
+from config import Test
 from database.db import db, setup_db, create_all
 from auth import AuthError, requires_auth
 from controllers.bootcamp import *
