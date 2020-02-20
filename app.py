@@ -1,21 +1,27 @@
-import json
-from flask import Flask, request, jsonify, abort
-from flask_api import status
-from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
-from flask_migrate import Migrate
-
-from models import db, Bootcamp, Course
-from auth import AuthError, requires_auth
-from bootcamp import *
 from course import *
+from bootcamp import *
+from auth import AuthError, requires_auth
+from models import db, Bootcamp, Course
+from flask_migrate import Migrate
+from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
+from flask_api import status
+from flask import Flask, request, jsonify, abort
+import json
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 app = Flask(__name__)
 # app.config.from_object('config.Development')
-app.config.from_object('config.Config')
+# app.config.from_object('config.Config')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.getenv(
+    'SQLALCHEMY_TRACK_MODIFICATIONS')
 db.app = app
 db.init_app(app)
-# db.create_all()
+db.create_all()
 
 migrate = Migrate(app, db)
 CORS(app)
