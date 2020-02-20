@@ -15,13 +15,10 @@ load_dotenv()
 
 app = Flask(__name__)
 # app.config.from_object('config.Development')
-# app.config.from_object('config.Config')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.getenv(
-    'SQLALCHEMY_TRACK_MODIFICATIONS')
+app.config.from_object('config.Config')
 db.app = app
 db.init_app(app)
-# db.create_all()
+db.create_all()
 
 migrate = Migrate(app, db)
 CORS(app)
