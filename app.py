@@ -24,6 +24,14 @@ migrate = Migrate(app, db)
 CORS(app)
 
 
+@app.route('/api/v1/bootcamps', methods=['GET'])
+def index():
+    return data = jsonify({
+        "success": True,
+        "message": 'Welcome'
+    })
+
+
 '''
     GET /api/v1/bootcamps
         Returns status code 200 and
