@@ -8,9 +8,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_api import status
 from flask import Flask, request, jsonify, abort
 import json
-import os
-from dotenv import load_dotenv
-load_dotenv()
 
 
 app = Flask(__name__)
@@ -24,7 +21,7 @@ migrate = Migrate(app, db)
 CORS(app)
 
 
-@app.route('/api/v1/bootcamps', methods=['GET'])
+@app.route('/', methods=['GET'])
 def index():
     return jsonify({
         "success": True,
