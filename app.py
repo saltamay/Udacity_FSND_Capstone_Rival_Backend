@@ -11,7 +11,8 @@ from bootcamp import *
 from course import *
 
 app = Flask(__name__)
-app.config.from_object('config.Development')
+# app.config.from_object('config.Development')
+app.config.from_object('config.Config')
 db.app = app
 db.init_app(app)
 # db.create_all()

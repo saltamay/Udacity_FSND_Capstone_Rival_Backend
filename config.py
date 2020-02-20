@@ -5,9 +5,14 @@ load_dotenv()
 # Grabs the folder where the script runs.
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
-SQLALCHEMY_TRACK_MODIFICATIONS = os.getenv(
-    'SQLALCHEMY_TRACK_MODIFICATIONS')
+
+class Config:
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
+    SQLALCHEMY_TRACK_MODIFICATIONS = os.getenv(
+        'SQLALCHEMY_TRACK_MODIFICATIONS')
+    AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN')
+    ALGORITHMS = os.getenv('ALGORITHMS')
+    API_AUDIENCE = os.getenv('API_AUDIENCE')
 
 
 class Development:
