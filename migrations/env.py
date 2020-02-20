@@ -1,6 +1,5 @@
 from __future__ import with_statement
-from dotenv import load_dotenv
-import os
+
 from flask import current_app
 
 import logging
@@ -24,11 +23,11 @@ logger = logging.getLogger('alembic.env')
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-load_dotenv()
-# SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
-config.set_main_option(
-    'sqlalchemy.url', os.getenv('DATABASE_URI').replace('%', '%%'))
-target_metadata = current_app.extensions['migrate'].db.metadata
+# load_dotenv()
+# # SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
+# config.set_main_option(
+#     'sqlalchemy.url', os.getenv('DATABASE_URI').replace('%', '%%'))
+# target_metadata = current_app.extensions['migrate'].db.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
