@@ -28,7 +28,7 @@ load_dotenv()
 SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
 config.set_main_option(
     'sqlalchemy.url', current_app.config.get(
-        'SQLALCHEMY_DATABASE_URI').replace('%', '%%'))
+        'SQLALCHEMY_DATABASE_URI'))
 target_metadata = current_app.extensions['migrate'].db.metadata
 
 # other values from the config, defined by the needs of env.py,
