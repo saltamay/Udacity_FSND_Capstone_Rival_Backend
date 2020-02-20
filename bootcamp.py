@@ -1,6 +1,5 @@
 from flask import jsonify
-from models.bootcamp import Bootcamp
-from models.course import Course
+from models import Bootcamp, Course
 from utils import rand_upvote, rand_img_number
 
 

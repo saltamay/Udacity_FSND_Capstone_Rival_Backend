@@ -1,14 +1,16 @@
-import json
-from flask import request, _request_ctx_stack
-from functools import wraps
-from jose import jwt
 from urllib.request import urlopen
+from jose import jwt
+from functools import wraps
+from flask import request, _request_ctx_stack
+import json
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-from config.config import Development
+AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN')
+ALGORITHMS = os.getenv('ALGORITHMS')
+API_AUDIENCE = os.getenv('API_AUDIENCE')
 
-AUTH0_DOMAIN = Development.AUTH0_DOMAIN
-ALGORITHMS = Development.ALGORITHMS
-API_AUDIENCE = Development.API_AUDIENCE
 
 # AuthError Exception
 '''

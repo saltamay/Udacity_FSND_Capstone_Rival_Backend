@@ -1,5 +1,5 @@
 from flask import jsonify
-from models.course import Course
+from models import Course
 from utils import rand_upvote
 
 
