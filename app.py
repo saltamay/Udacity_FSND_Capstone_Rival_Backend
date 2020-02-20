@@ -5,16 +5,17 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
 
-from config import Development
-from config import Test
-from database.db import db, setup_db, create_all
+from models import db, Bootcamp, Course
 from auth import AuthError, requires_auth
-from controllers.bootcamp import *
-from controllers.course import *
+from bootcamp import *
+from course import *
 
 app = Flask(__name__)
-setup_db(app, Development.SQLALCHEMY_DATABASE_URI)
-# setup_db(app, Test.SQLALCHEMY_DATABASE_URI)
+app.config.from_object('config.Development')
+db.app = app
+db.init_app(app)
+# db.create_all()
+
 migrate = Migrate(app, db)
 CORS(app)
 

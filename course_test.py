@@ -1,14 +1,19 @@
-import unittest
-import json
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
-from flask_migrate import Migrate
-
 from app import app
-from config.config import Test
-from database.db_test import setup_db, drop_and_create_all, db_test_init
-from models.course import Course
+from db_test import drop_and_create_all, db_test_init
+from flask_migrate import Migrate
+from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
+import os
+import json
+import unittest
+from dotenv import load_dotenv
+load_dotenv()
+
+# from models import Bootcamp, Course
+
+USER_AUTH_TOKEN = os.getenv('USER_AUTH_TOKEN')
+ADMIN_AUTH_TOKEN = os.getenv('ADMIN_AUTH_TOKEN')
 
 
 class CoursesTestCase(unittest.TestCase):
@@ -17,17 +22,19 @@ class CoursesTestCase(unittest.TestCase):
     def setUp(self):
         '''Define test variables and initialize app.'''
         self.app = app
+        self.app.config.from_object('config.Test')
         # propagate the exceptions to the test client
         self.app.testing = True
         self.client = self.app.test_client
-        setup_db(self.app, Test.SQLALCHEMY_DATABASE_URI)
+        drop_and_create_all()
+        db_test_init()
 
         self.user_auth_header = {
-            "Authorization": f"Bearer {Test.USER_AUTH_TOKEN}"
+            "Authorization": f"Bearer {USER_AUTH_TOKEN}"
         }
 
         self.admin_auth_header = {
-            "Authorization": f"Bearer {Test.ADMIN_AUTH_TOKEN}"
+            "Authorization": f"Bearer {ADMIN_AUTH_TOKEN}"
         }
 
         self.new_course = {

@@ -1,7 +1,4 @@
-from database.db import db
-from models.bootcamp import Bootcamp
-from models.course import Course
-
+from models import db, Bootcamp, Course
 
 '''
 setup_db(app)
@@ -38,9 +35,8 @@ def drop_and_create_all():
     db.create_all()
 
 
-def setup_db(app, db_path):
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_path
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+def setup_db(app):
+    app.config.from_object('config.Test')
     db.app = app
     db.init_app(app)
     drop_and_create_all()
